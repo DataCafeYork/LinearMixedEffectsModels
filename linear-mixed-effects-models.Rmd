@@ -113,7 +113,9 @@ cat(sprintf('Removed %d rows, or %0.2f%% of the data.\n',
    )
 ```
 
-That's even more data that gets remove: about 40%. Hmmm. Those NA's are not missing at random, it's because we can't really extrapolate from the present data. Also, there are only data points missing at 15, 25 and 35 degrees. Maybe we should remove the most egregious hand angle (15 degrees) as we did for some analyses in the paper, and then check which participants still have missing data. Perhaps then we won't have to remove so much data?
+That's even more data that gets remove: about 40%. Hmmm.
+
+Also, those NA's are not missing at random, it's because we can't really extrapolate from the present data. Also, there are only data points missing at 15, 25 and 35 degrees. Maybe we should remove the most egregious hand angle (15 degrees) as we did for some analyses in the paper, and then check which participants still have missing data. Perhaps then we won't have to remove so much data?
 
 ```{r}
 expH <- exp[-which(exp$handangle_deg == 15),]
@@ -186,7 +188,7 @@ And it's residuals:
 plot(exp_model_lmer)
 ```
 
-In this case there might be some systematic errors in the model, as the residuals seem close to zero around 0 and around -8, but in between they might be a tiny bit higher. I won't check this here, but it would mean that the fixed effects (predictors / factors) don't fully explain the data, maybe there is some additional effect going on, or we should put the data on some other scale. However, by and large it seems to work reasonably well. Much better than no model.
+In this case there might be some systematic errors in the model, as the residuals seem close to zero around 0 and around -8, but in the middle they might be a tiny bit higher. I won't check this here, but it would mean that the fixed effects (predictors / factors) don't fully explain the data, maybe there is some additional effect going on, or we should put the data on some other scale. However, by and large it seems to work reasonably well. Much better than no model.
 
 This is pretty cool, but there are terms for the combinations of every level in the factors. Maybe this provides a lot more information, but it's not so comparable to the trusty, old ANOVA.
 
@@ -215,7 +217,7 @@ library(nlme)
 library(car)
 ```
 
-You will see a warning that something from `lme4` is overwritten. This is why you should use namespaces.
+You will see a warning that something from `lme4` is overwritten. This is why you should use namespaces... bad me.
 
 ```{r}
 print(car::Anova(nlme::lme(taperror_deg ~ rotated_b * passive_b * handangle_deg, random = ~1|participant, na.action=na.exclude, data=exp), type=3))
@@ -287,4 +289,4 @@ print(anova(exp_model_lmer,ddf='Satterthwaite',type=3))
 
 Can I still draw the same conclusions as before, now that there are main effects without an interaction? Maybe not, as these main effects might be an artefact of the simpler model.
 
-However, given all the tests done here, I'm pretty sure that exposure training did have an effect on localization responses. That means I can continue looking at the size of that effect in other analyses, but this is where the tutorial stops.
+However, given all the tests done here, I'm pretty sure that exposure training did have an effect on localization responses. That means I can continue looking at the _size_ of that effect in other analyses, but this is where the tutorial stops.
